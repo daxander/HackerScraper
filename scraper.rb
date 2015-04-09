@@ -29,6 +29,8 @@ class Scraper
     user_id = comment.search('.comhead a').first.text
     content = comment.search('.comment').text
         comments << Comment.new(user_id, content)
+    end
+    comments
   end
 
 end

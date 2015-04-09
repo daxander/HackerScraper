@@ -7,7 +7,7 @@ class Comment
     @user_id = user_id
   end
 
-  def create(user_id,content)
+  def create(user_id, content)
     Comment.new(user_id, content)
   end
 
