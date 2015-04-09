@@ -1,26 +1,36 @@
-require 'nokogiri'
-require_relative 'comment'
-require_relative 'post'
-require_relative 'application'
+# require 'nokogiri'
+# require_relative 'comment'
+# require_relative 'post'
+# require_relative 'application'
+
 
 class Scraper
 
-  @doc = Nokogiri::HTML(File.open("post.html"))
-
-  def self.title
-   @doc.search('.title a').map { |link| link.inner_text}
+  def self.title(link)
+   link.search('.title a').map { |link| link.inner_text}
   end
 
-  def self.url
-    @doc.search('.title a').map { |link| link['href']}
+  def self.url(link)
+    link.search('.title a').map { |link| link['href']}
   end
 
-  def self.points
-   @doc.search('.score').map { |link| link.inner_text}
+  def self.points(link)
+   link.search('.score').map { |link| link.inner_text}
   end
 
-  def self.item_id 
-    @doc.search('.subtext .score').map do |link| link.attr("id")[/\d+/]
+  def self.item_id(link) 
+    link.search('.subtext .score').map do |link| link.attr("id")[/\d+/]
+    end
+  end
+
+  def self.comments(link)
+    comments = []
+    link.search('.default').each do |comment|
+    user_id = comment.search('.comhead a').first.text
+    content = comment.search('.comment').text
+        comments << Comment.new(user_id, content)
   end
 
 end
+
+    
